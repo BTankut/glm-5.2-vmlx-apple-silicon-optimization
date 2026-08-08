@@ -18,6 +18,7 @@ hardware; every tuning claim carries its A/B numbers.
 | Prefill throughput | ~322 tok/s at 346K depth (batched-tokens 4096) |
 | Needle-in-haystack | **40/40** — 5–8 lengths × 5 depths, 5 code distractors per haystack, zero misses incl. 375K |
 | Quality bench | 8/8 across the quant ladder |
+| Vision | **full image input on a text-only model** — gateway bridge to a dedicated VLM; beat an in-model vision graft in an A/B *and* paid for +64K of context |
 
 ## Hardware
 
@@ -50,10 +51,15 @@ hardware; every tuning claim carries its A/B numbers.
    **192:1** (3.2M prompt tokens vs 16.6K generated), so 4096 wins there
    (+11–15% prefill, −0..6% decode); decode-dominated chat prefers 2048.
    Both A/Bs are in [docs/serving.md](docs/serving.md).
-5. **Vision lives outside the model.** The production checkpoint is
-   text-only; images are bridged by a small VLM at the gateway (an A/B against
-   an in-model vision graft favored the bridge — and the graft's ~1 GB +
-   reserve became +64K of context instead).
+5. **Vision lives outside the model — and that is a feature.** The
+   production checkpoint is text-only; the gateway intercepts image parts on
+   both API surfaces and a dedicated VLM (Qwen3-VL-30B-A3B) transcribes them
+   under a strict character-exact prompt before the 744B ever sees the
+   message. An A/B against an in-model vision graft favored the bridge on
+   answer quality, and retiring the graft converted its memory into **+64K
+   context (316K → 380K)**. Every client gets image input with zero
+   configuration. Full design, the transcription-prompt rules and honest
+   limits: [docs/vision.md](docs/vision.md).
 
 ## Quick recipe
 
@@ -67,6 +73,8 @@ Full flags, fabric env, and the multi-node docker pattern:
 [docs/serving.md](docs/serving.md).
 GB10-specific operational pitfalls (read before first boot):
 [docs/gb10-notes.md](docs/gb10-notes.md).
+Vision on a text-only model (the bridge architecture):
+[docs/vision.md](docs/vision.md).
 The single-API backend (tool plane, hybrid streaming, job pattern):
 [docs/backend.md](docs/backend.md).
 

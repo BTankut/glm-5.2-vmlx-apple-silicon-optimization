@@ -16,11 +16,11 @@ clients ──► thin compat gateway ──► (flag off) ───────
                       + executor)        (infographics, web search, ...)
 ```
 
-- **Thin gateway** (FastAPI): protocol quirks, an image→text **vision bridge**
-  (a small VLM describes inbound images so the text-only 744B never sees
-  pixels), time-based SSE keepalive, API-key→profile mapping. Fail-safe rule:
-  any tool-plane error falls open to the legacy path — a bug degrades to
-  plain chat, never a dead request.
+- **Thin gateway** (FastAPI): protocol quirks, the image→text **vision
+  bridge** (see [vision.md](vision.md) — one of the system's signature
+  capabilities), time-based SSE keepalive, API-key→profile mapping.
+  Fail-safe rule: any tool-plane error falls open to the legacy path — a bug
+  degrades to plain chat, never a dead request.
 - **LiteLLM** (digest-pinned container): MCP server registry, per-virtual-key
   permissions, and the REST tool executor (`/mcp-rest/tools/call`).
 - **FastMCP servers**: each local capability is a few dozen lines.
