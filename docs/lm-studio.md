@@ -2,6 +2,11 @@
 
 ## Summary
 
+**Re-checked 2026-08-09:** still not loadable. LM Studio 0.4.20 (2026-07-22)
+ships an MLX engine that pins an `mlx-lm` commit from 2026-06-12 — before any
+GLM-5.2 IndexShare work — so the failure below is unchanged. Upstream
+tracking: `ml-explore/mlx-lm` issue #1418.
+
 LM Studio was tested as a possible alternative MLX server. The result was negative for this exact model/runtime combination.
 
 Validated result:

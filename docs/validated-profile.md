@@ -1,5 +1,9 @@
 # Validated Profile
 
+> Validated on the vMLX 1.5.x app (June 2026). Two of the three hand patches
+> are obsolete on current vMLX and one is still required — see the status
+> section in the repository README before applying anything here.
+
 ## Model
 
 - Hugging Face model: `mlx-community/GLM-5.2-mxfp4`

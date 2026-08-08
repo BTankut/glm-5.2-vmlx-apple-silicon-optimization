@@ -1,5 +1,22 @@
 # Known Issues
 
+## App Auto-Update Silently Reverts In-Bundle Patches
+
+The vMLX Electron app auto-updates itself and refreshes its bundled Python
+engine on startup. Every hand patch inside `/Applications/vMLX.app` (replaced
+model file, swapped `mlx-metal` wheel, seed patch) is silently reverted by the
+next update — observed directly on the test workstation, which had moved to
+1.5.69 on its own with all patches gone.
+
+Mitigation: run patched engines from a Python environment you control
+(`pip install vmlx` / `uv tool install vmlx`, then `vmlx serve ...`). Treat
+the app bundle as unpatchable.
+
+## Request-Level Seed (historical)
+
+Resolved upstream in vMLX v1.6.6 (2026-07-10): chat/completions honor a
+request-local `seed`. The local patch in this runbook is only needed on 1.5.x.
+
 ## `Ollama is running` in the Browser
 
 The root route on port `8001` may return:

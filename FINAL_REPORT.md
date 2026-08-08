@@ -49,3 +49,16 @@ Mobile clients may timeout while the backend continues generating. With the vMLX
 ```
 
 Avoid sending hidden reasoning fields such as `reasoning_effort` or `thinking_budget` unless you intentionally want a long reasoning run.
+
+## Addendum (2026-08-09)
+
+The report above describes the June 2026 state. An August audit found:
+
+- The app auto-update had reverted all in-bundle patches (see README status
+  section). Run patched engines from a pip/uv environment, not the app bundle.
+- Still required: the GLM-5.2 DSA indexer model-file patch (no released
+  `mlx-lm` supports IndexShare yet; patch `deepseek_v32.py`).
+- No longer required on current vMLX: the seed patch (upstream in v1.6.6) and
+  the mlx-metal wheel swap (use the Tahoe DMG shipped since v1.6.21/1.6.22).
+- LM Studio (0.4.20) still cannot load the model.
+- The profile awaits re-validation on vMLX 1.6.x.

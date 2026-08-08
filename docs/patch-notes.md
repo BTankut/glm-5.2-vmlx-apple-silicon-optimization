@@ -4,6 +4,11 @@ This repository does not vendor full vMLX or `mlx-lm` source files. The notes be
 
 ## 1. GLM-5.2 DSA Indexer Sharing
 
+**Status 2026-08-09: STILL REQUIRED.** No released `mlx-lm` (latest v0.31.3)
+supports GLM-5.2 IndexShare; tracking `ml-explore/mlx-lm` issue #1418. Note
+that upstream `glm_moe_dsa.py` is a thin shim — the indexer implementation
+lives in `deepseek_v32.py`, so that is the file to inspect or replace.
+
 The bundled `mlx_lm/models/glm_moe_dsa.py` was replaced with the GLM-5.2 DSA indexer-sharing implementation from upstream `mlx-lm` work.
 
 Purpose:
@@ -18,6 +23,9 @@ Validated hash:
 ```
 
 ## 2. Sampling Guard and Bypass
+
+**Status 2026-08-09:** still applies to 1.5.x-era bundles. On vMLX >= 1.6.21
+install the Tahoe (macOS 26) DMG instead of swapping wheels (see patch 3).
 
 A local GLM-5.2 guard was added around sampling. Without the bypass, GLM-5.2 MXFP4 requests can be forced to greedy decoding:
 
@@ -35,6 +43,11 @@ VMLINUX_ALLOW_GLM52_SAMPLING=1
 ```
 
 ## 3. macOS 26 `mlx-metal` Wheel
+
+**Status 2026-08-09: OBSOLETE on vMLX >= 1.6.21/1.6.22** — the app now ships a
+separate Tahoe (macOS 26) build. Likely root cause of the original crash:
+`ml-explore/mlx` PR #3501 (metallib deployment target), shipped in mlx 0.32.0
+(our attribution, not an upstream statement).
 
 The local vMLX bundle originally had `mlx-metal 0.31.2` from the `macosx_14_0_arm64` wheel. The validated setup installed the `macosx_26_0_arm64` wheel for the same version.
 
